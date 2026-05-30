@@ -1,0 +1,31 @@
+name: plato
+version: 0.1.0
+description: PLATO awareness layer — conservation-law agent shell for Hermes
+kind: plato
+hooks:
+  - pre_tool_call
+  - post_tool_call
+  - on_session_start
+  - on_session_end
+config:
+  plato.agent_id:
+    description: "Unique identifier for this Hermes instance"
+    default: "hermes-local"
+  plato.bridge_url:
+    description: "WebSocket URL for PLATO bridge server"
+    default: ""
+  plato.instance_type:
+    description: "Hardware type: oracle, jetson, vps, local"
+    default: "local"
+  plato.conservation_budget:
+    description: "Total energy budget for this instance"
+    default: 1000.0
+  plato.override_phrases:
+    description: "Phrases that trigger captain override"
+    default: ["take the wheel", "override", "i've got this", "all stop", "manual"]
+  plato.watchdog_timeout_seconds:
+    description: "Seconds without captain contact before hardware safety mode"
+    default: 30
+  plato.hardware_enabled:
+    description: "Whether hardware control is enabled"
+    default: false

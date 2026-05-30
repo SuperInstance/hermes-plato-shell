@@ -1,0 +1,94 @@
+# PLATO Config Overlay
+# Add these settings to your ~/.hermes/config.yaml
+
+# PLATO-specific settings
+plato:
+  # Unique identifier for this Hermes instance
+  agent_id: "hermes-local"
+
+  # Hardware type this instance runs on
+  instance_type: "local"  # oracle | jetson | vps | local
+
+  # Total energy budget for conservation enforcement
+  conservation_budget: 1000.0
+
+  # Phrases that trigger captain override (case-insensitive)
+  override_phrases:
+    - "take the wheel"
+    - "override"
+    - "i've got this"
+    - "all stop"
+    - "manual"
+    - "stand down"
+    - "bump off"
+
+  # Seconds without captain contact before hardware safety mode
+  watchdog_timeout_seconds: 30
+
+  # Enable/disable hardware control
+  hardware_enabled: false
+
+  # Bridge server URL (for connecting to other PLATO agents)
+  bridge_url: ""
+
+  # Crew archetype defaults
+  crew:
+    engineering:
+      auto_activate: false
+      tools: ["terminal", "file"]
+    science:
+      auto_activate: false
+      tools: ["terminal", "code_execution", "search"]
+    security:
+      auto_activate: true  # Security is always on
+      tools: ["terminal", "monitoring"]
+    operations:
+      auto_activate: false
+      tools: ["terminal", "cron", "messaging"]
+    diplomacy:
+      auto_activate: false
+      tools: ["terminal", "messaging", "web"]
+
+# Model routing for PLATO operations
+# NO OPENROUTER — DeepInfra only
+model:
+  provider: deepinfra
+  model: deepseek/deepseek-chat
+
+# Auxiliary models for PLATO-specific tasks
+auxiliary:
+  conservation_verification:
+    provider: deepinfra
+    model: deepseek/deepseek-chat
+  hardware_control:
+    provider: deepinfra
+    model: deepseek/deepseek-chat
+  crew_management:
+    provider: deepinfra
+    model: deepseek/deepseek-chat
+
+# Skills to load (PLATO skills)
+skills:
+  config:
+    plato_ecosystem:
+      enabled: true
+    plato_hardware_bridge:
+      enabled: true
+    plato_subagent_archetypes:
+      enabled: true
+
+# Gateway settings for Telegram control
+gateway:
+  platforms:
+    telegram:
+      enabled: true
+      # Captain has override authority
+      override_role: "captain"
+
+# Delegation settings for crew archetypes
+delegation:
+  max_concurrent_children: 5
+  max_spawn_depth: 2
+  child_timeout_seconds: 120
+  orchestrator_enabled: true
+  subagent_auto_approve: false  # Captain approves crew activations
